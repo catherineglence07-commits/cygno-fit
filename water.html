@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cygno Fit - Stay Hydrated</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            overflow: hidden;
+            background: linear-gradient(to top, #4facfe, #00f2fe);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Floating bubbles background */
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: rise 10s infinite ease-in;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-120vh);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255,255,255,0.95);
+            width: 500px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #0072ff;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #0072ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #005edb;
+        }
+
+        .water-tank {
+            margin: 20px auto;
+            width: 120px;
+            height: 250px;
+            border: 3px solid #0072ff;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            background: #e0f7ff;
+        }
+
+        .water-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, #00c6ff, #0072ff);
+            height: 0%;
+            transition: height 1s ease;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #0072ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Bubble Background -->
+<script>
+for (let i = 0; i < 25; i++) {
+    let bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.style.left = Math.random() * 100 + "vw";
+    bubble.style.width = bubble.style.height = Math.random() * 40 + 10 + "px";
+    bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    document.body.appendChild(bubble);
+}
+</script>
+
+<div class="container">
+
+    <h1>💧 Cygno Fit - Stay Hydrated</h1>
+
+    <p>Enter your weight (kg)</p>
+    <input type="number" id="weight" placeholder="Enter weight">
+
+    <button onclick="calculateWater()">Calculate Daily Water</button>
+
+    <div class="result" id="waterResult"></div>
+
+    <p>Enter water consumed today (litres)</p>
+    <input type="number" id="consumed" placeholder="Litres consumed">
+
+    <button onclick="trackWater()">Track</button>
+
+    <div class="water-tank">
+        <div class="water-fill" id="waterFill"></div>
+    </div>
+
+</div>
+
+<script>
+
+let requiredWater = 0;
+
+function calculateWater() {
+    const weight = document.getElementById("weight").value;
+
+    if (weight <= 0) {
+        alert("Please enter valid weight.");
+        return;
+    }
+
+    // Formula: 35 ml per kg
+    requiredWater = (weight * 0.035).toFixed(2);
+
+    document.getElementById("waterResult").innerText =
+        "You should drink approximately " + requiredWater + " litres per day.";
+}
+
+function trackWater() {
+    const consumed = document.getElementById("consumed").value;
+
+    if (requiredWater == 0) {
+        alert("Please calculate required water first.");
+        return;
+    }
+
+    let percentage = (consumed / requiredWater) * 100;
+
+    if (percentage > 100) percentage = 100;
+
+    document.getElementById("waterFill").style.height = percentage + "%";
+}
+
+</script>
+
+</body>
+</html>

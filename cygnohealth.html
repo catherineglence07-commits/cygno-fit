@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cygno Fit – BMI Calculator</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+
+    /* Health & Nutrition Background */
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url('https://images.unsplash.com/photo-1498837167922-ddd27525d352');
+    background-size:cover;
+    background-position:center;
+}
+
+.container{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    width:90%;
+    max-width:420px;
+    text-align:center;
+}
+
+h2{
+    color:#2e7d32;
+}
+
+label{
+    font-weight:bold;
+    display:block;
+    text-align:left;
+    margin-top:12px;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:#ff9800;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#f57c00;
+}
+
+.result{
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+    background:#f1f8e9;
+    display:none;
+    transform:scale(0.8);
+    opacity:0;
+}
+
+.back-btn{
+    background:#2e7d32;
+}
+
+/* Fitness animation */
+.fitness-icon{
+    font-size:35px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="fitness-icon" id="icon">🏋️</div>
+
+<h2>Cygno Fit – BMI Calculator</h2>
+
+<label>Height (in cm):</label>
+<input type="number" id="height" placeholder="Enter height">
+
+<label>Weight (in kg):</label>
+<input type="number" id="weight" placeholder="Enter weight">
+
+<button onclick="calculateBMI()">Calculate BMI</button>
+
+<div class="result" id="resultBox">
+    <h3>Your BMI Result</h3>
+    <p id="bmiValue"></p>
+    <p id="bmiCategory"></p>
+</div>
+
+<button class="back-btn" onclick="goHome()">Back to Home</button>
+
+</div>
+
+<script>
+function calculateBMI(){
+
+    let height = parseFloat(document.getElementById("height").value);
+    let weight = parseFloat(document.getElementById("weight").value);
+
+    if(!height || !weight || height <= 0 || weight <= 0){
+        alert("Please enter valid height and weight values!");
+        return;
+    }
+
+    // Convert cm to meters
+    let heightMeters = height / 100;
+
+    // BMI Formula
+    let bmi = weight / (heightMeters * heightMeters);
+    let finalBMI = bmi.toFixed(2);
+
+    let category = "";
+    let color = "";
+    let icon = "";
+
+    if(bmi < 18.5){
+        category = "Underweight";
+        color = "#ff7043";
+        icon = "🥗";
+    }
+    else if(bmi >= 18.5 && bmi <= 24.9){
+        category = "Normal weight";
+        color = "#4caf50";
+        icon = "💪";
+    }
+    else if(bmi >= 25 && bmi <= 29.9){
+        category = "Overweight";
+        color = "#ffa726";
+        icon = "🏃";
+    }
+    else{
+        category = "Obese";
+        color = "#e53935";
+        icon = "⚠️";
+    }
+
+    document.getElementById("bmiValue").innerText = "BMI: " + finalBMI;
+    document.getElementById("bmiCategory").innerText = "Category: " + category;
+    document.getElementById("bmiCategory").style.color = color;
+
+    // Animated result reveal
+    let resultBox = document.getElementById("resultBox");
+    resultBox.style.display = "block";
+
+    setTimeout(() => {
+        resultBox.style.transition = "all 0.5s ease";
+        resultBox.style.transform = "scale(1)";
+        resultBox.style.opacity = "1";
+    }, 100);
+
+    // Change fitness icon dynamically
+    document.getElementById("icon").innerText = icon;
+}
+
+function goHome(){
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
